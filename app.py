@@ -67,7 +67,7 @@ def check_auth(username, password):
     if user:  
         hashed_password = user[0]  # Извлекаем хешированный пароль из базы  
         # Сравниваем хеш пароля из базы с хешем вводимого пароля  
-        return bcrypt.checkpw(password.encode('utf-8'), hashed_password)  
+        return checkpw(password.encode('utf-8'), hashed_password)  
     return False
 # -----------------------------------------------------------------------------
 # УТИЛИТНАЯ ФУНКЦИЯ ДЛЯ ГЕНЕРАЦИИ СЛОТОВ
