@@ -28,7 +28,16 @@ const strizhkaOptions = ['Ножницами', 'Под машинку', 'Стр�
 // 1) Инициализируем элементы select  
 // ------------------------------------------  
 function initSelectOptions() {  
-  // Специалисты  
+  // === Специалист ===  
+  // Добавим "заглушку" перед тем, как пройдемся по массиву specialists  
+  const placeholderSpec = document.createElement('option');  
+  placeholderSpec.value = '';  
+  placeholderSpec.textContent = '-- выберите специалиста --';  
+  placeholderSpec.disabled = true;     // чтобы нельзя было выбрать заглушку  
+  placeholderSpec.selected = true;     // сразу выбрана  
+  specialistSelect.appendChild(placeholderSpec);  
+
+  // Далее основные пункты  
   specialists.forEach(item => {  
     const option = document.createElement('option');  
     option.value = item;  
@@ -36,7 +45,16 @@ function initSelectOptions() {
     specialistSelect.appendChild(option);  
   });  
 
-  // Услуги  
+
+  // === Услуга ===  
+  // Аналогично создаем placeholder  
+  const placeholderService = document.createElement('option');  
+  placeholderService.value = '';  
+  placeholderService.textContent = '-- выберите услугу --';  
+  placeholderService.disabled = true;  
+  placeholderService.selected = true;  
+  serviceSelect.appendChild(placeholderService);  
+
   services.forEach(item => {  
     const option = document.createElement('option');  
     option.value = item;  
@@ -44,8 +62,19 @@ function initSelectOptions() {
     serviceSelect.appendChild(option);  
   });  
 
-  // Тип стрижки  
+
+  // === Тип стрижки ===  
+  // Сначала чистим, чтобы избежать дублей  
   strizhkaTypeSelect.innerHTML = '';  
+
+  // Если нужен placeholder, тоже можем добавить:  
+  const placeholderStrizhka = document.createElement('option');  
+  placeholderStrizhka.value = '';  
+  placeholderStrizhka.textContent = '-- выберите тип стрижки --';  
+  placeholderStrizhka.disabled = true;  
+  placeholderStrizhka.selected = true;  
+  strizhkaTypeSelect.appendChild(placeholderStrizhka);  
+
   strizhkaOptions.forEach(item => {  
     const option = document.createElement('option');  
     option.value = item;  
@@ -53,14 +82,15 @@ function initSelectOptions() {
     strizhkaTypeSelect.appendChild(option);  
   });  
 
-  // По умолчанию тип стрижки скрыт  
+  // По умолчанию прячем блок, если услуга не "Стрижка"  
   strizhkaTypeWrapper.style.display = 'none';  
-}  
+}
 
 // ------------------------------------------  
 // 2) Отображение «Тип стрижки» только при выборе "Стрижка"  
 // ------------------------------------------  
 serviceSelect.addEventListener('change', () => {  
+  // Добавим заглушку  
   if (serviceSelect.value === 'Стрижка') {  
     strizhkaTypeWrapper.style.display = 'block';  
   } else {  
@@ -81,7 +111,9 @@ dateInput.addEventListener('change', () => {
   // Добавим заглушку  
   const placeholderOption = document.createElement('option');  
   placeholderOption.value = '';  
-  placeholderOption.textContent = '-- выберите время --';  
+  placeholderOption.textContent = '-- выберите время --';
+  //placeholderOption.selected = true;
+  //placeholderStrizhka.disabled = true;
   timeSelect.appendChild(placeholderOption);  
 
   // Запрашиваем доступные слоты  
@@ -169,10 +201,68 @@ initSelectOptions();
 // Функции валидации и работы с сервером  
 // ------------------------------------------  
 
+// Автоматическое форматирование ввода номера телефона
+if (typeof document !== "undefined") {  
+  const phoneInput = document.getElementById('phone');  
+
+  if (phoneInput) {  
+    // 1. На ввод (input) — убираем всё кроме цифр:  
+    phoneInput.addEventListener('input', function () {  
+      const digitsOnly = this.value.replace(/\D/g, '');  
+      this.value = digitsOnly;  
+    });  
+
+    // 2. На потерю фокуса (blur) — форматируем  
+    phoneInput.addEventListener('blur', function () {  
+      let phoneNumber = this.value.replace(/\D/g, '');  
+
+      // Если в начале стоит '8', заменим ее на '7'  
+      // (Пример: 8XXXXXXXXXX → 7XXXXXXXXXX)  
+      if (phoneNumber.startsWith('8')) {  
+        phoneNumber = '7' + phoneNumber.substring(1);  
+      }  
+
+      // Если нет '7' в начале, принудительно добавим. (Можно отключить, если не нужно)  
+      if (!phoneNumber.startsWith('7')) {  
+        phoneNumber = '7' + phoneNumber;  
+      }  
+
+      // Обрезаем до 11 символов  
+      phoneNumber = phoneNumber.substring(0, 11);  
+
+      // Если пользователь стёр вообще всё, оставим пустым  
+      if (!phoneNumber.length) {  
+        this.value = '';  
+        return;  
+      }  
+
+      // Формируем +7 (XXX) XXX-XX-XX  
+      let formattedNumber = `+${phoneNumber.substring(0,1)}`;  
+
+      // Если больше 1 цифры, продолжаем  
+      if (phoneNumber.length >= 2) {  
+        formattedNumber += ` (${phoneNumber.substring(1,4)}`;  
+      }  
+      if (phoneNumber.length >= 4) {  
+        formattedNumber += `) ${phoneNumber.substring(4,7)}`;  
+      }  
+      if (phoneNumber.length >= 7) {  
+        formattedNumber += `-${phoneNumber.substring(7,9)}`;  
+      }  
+      if (phoneNumber.length >= 9) {  
+        formattedNumber += `-${phoneNumber.substring(9,11)}`;  
+      }  
+
+      this.value = formattedNumber;  
+    });  
+  }  
+} 
+
 // Проверка полей формы  
 function validateFields(date, time, specialist, service, name, phone) {  
   // Проверка телефона  
-  const phoneRegex = /^\+?\d{1,3}?[-\s]?\(?\d{1,3}\)?[-\s]?\d{3,4}[-\s]?\d{4}$/;  
+  // +7 (XXX) XXX-XX-XX  
+  const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;  
   if (!phoneRegex.test(phone)) {  
     alert('Пожалуйста, введите корректный номер телефона.');  
     return false;  

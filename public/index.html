@@ -10,7 +10,7 @@
     <!-- Контейнер для затемнённой рамки -->  
   <div style="  
     margin: 20px auto;  
-    max-width: 800px;  
+    max-width: 600px;  
     background-color: rgba(0, 0, 0, 0.4);  
     backdrop-filter: blur(4px);  
     border-radius: 8px;  
@@ -18,7 +18,7 @@
     color: #fff;  
   ">  
   <header>
-    <h1>Барбершоп "Очередной" в Москве</h1>
+    <h1>Барбершоп "Очередной"</h1>
     <img id="barber-logo" src="./images/logo.png" alt="Логотип барбершопа"/>
   </header>
 
@@ -31,7 +31,7 @@
     </p>  
   </section> 
 
-  <main style="max-width:600px; margin:0 auto;">
+  <main style="max-width:500px; margin:0 auto;">
     <form id="appointment-form">
       <h2>Запись на приём</h2>
 
@@ -45,15 +45,14 @@
       <div class="form-group">
         <label for="time">Время:</label>
         <select id="time" name="time" required>
-          <!-- Варианты будут добавляться скриптом -->
+          <option value="">-- выберите время --</option>  
         </select>
       </div>
 
       <!-- Специалист -->
       <div class="form-group">
         <label for="specialist">Специалист:</label>
-        <select id="specialist" name="specialist" required>
-          <!-- Варианты будут добавляться скриптом -->
+        <select id="specialist" name="specialist" required> 
         </select>
       </div>
 
@@ -61,28 +60,26 @@
       <div class="form-group">
         <label for="service">Услуга:</label>
         <select id="service" name="service" required>
-          <!-- Варианты будут добавляться скриптом -->
         </select>
       </div>
 
       <!-- Тип стрижки (скрытый по умолчанию) -->
       <div class="form-group" id="strizhkaTypeWrapper">
         <label for="strizhka-type">Тип стрижки:</label>
-        <select id="strizhka-type" name="strizhka-type">
-          <!-- Варианты будут добавляться скриптом -->
+        <select id="strizhka-type" name="strizhka-type"> 
         </select>
       </div>
 
       <!-- ФИО -->
       <div class="form-group">
         <label for="name">ФИО:</label>
-        <input type="text" id="name" name="name" required/>
+        <input type="text" id="name" name="name" placeholder="Иван Иванов" required/>
       </div>
 
       <!-- Телефон -->
       <div class="form-group">
         <label for="phone">Номер телефона:</label>
-        <input type="tel" id="phone" name="phone" required/>
+        <input type="tel" id="phone" name="phone" placeholder="+7XXXXXXXXXX" required/>
       </div>
 
       <button type="submit">Подтвердить запись</button>

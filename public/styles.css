@@ -49,23 +49,23 @@
   /* Заголовки */
   h1 {
     font-size: 2.2rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
   
   h2 {
     font-size: 1.8rem;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
   }
   
   /* Формы */
   .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: left;
   }
   
   .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     font-weight: bold;
     font-size: 1.1rem;
   }
