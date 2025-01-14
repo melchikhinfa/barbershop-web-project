@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, send_from_directory, Response
 from dotenv import load_dotenv
 import json
+from bcrypt import hashpw, gensalt, checkpw  
+
 
 app = Flask(__name__)
 
@@ -17,6 +19,9 @@ load_dotenv(".env")
 def init_db():
     username = os.getenv("FLASK_USER", "default_user")
     password = os.getenv("FLASK_PASS", "default_pass")
+    hashed_password = hashpw(password.encode('utf-8'), gensalt())  
+
+    
     with sqlite3.connect(DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute("""  
@@ -40,25 +45,30 @@ def init_db():
             )
         ''')
 
-        cursor.execute("INSERT OR IGNORE INTO users (username, password) VALUES (?, ?)", (username, password))  
+        cursor.execute("INSERT OR IGNORE INTO users (username, password) VALUES (?, ?)", (username, hashed_password))  
         conn.commit()
 
 # -----------------------------------------------------------------------------
 # УТИЛИТНАЯ ФУНКЦИЯ ДЛЯ ПРОВЕРКИ АВТОРИЗАЦИИ
 # -----------------------------------------------------------------------------
-def check_auth(username, password):
-    """
-    Проверка логина и пароля в БД
-    """
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
+def check_auth(username, password):  
+    """  
+    Проверка логина и пароля в БД с использованием хеширования паролей.  
+    """  
+    conn = sqlite3.connect(DATABASE)  
+    cursor = conn.cursor()  
 
-    cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+    # Ищем пользователя по имени  
+    cursor.execute("SELECT password FROM users WHERE username=?", (username,))  
+    user = cursor.fetchone()  
+    conn.close()  
     
-    user = cursor.fetchone()
-    conn.close()
-    return user is not None
-
+    # Если пользователь найден, проверяем пароль  
+    if user:  
+        hashed_password = user[0]  # Извлекаем хешированный пароль из базы  
+        # Сравниваем хеш пароля из базы с хешем вводимого пароля  
+        return bcrypt.checkpw(password.encode('utf-8'), hashed_password)  
+    return False
 # -----------------------------------------------------------------------------
 # УТИЛИТНАЯ ФУНКЦИЯ ДЛЯ ГЕНЕРАЦИИ СЛОТОВ
 # -----------------------------------------------------------------------------
@@ -101,6 +111,12 @@ def serve_file(filename):
     """
     return send_from_directory('./public', filename)
 
+@app.route('/privacy-policy', methods=['GET'])  
+def privacy_policy():  
+    """  
+    Маршрут для отображения политики конфиденциальности.  
+    """  
+    return send_from_directory('./public', 'privacy.html')
 # -----------------------------------------------------------------------------
 # МАРШРУТ ДЛЯ ПОЛУЧЕНИЯ СПИСКА ДОСТУПНЫХ СЛОТОВ
 # -----------------------------------------------------------------------------
