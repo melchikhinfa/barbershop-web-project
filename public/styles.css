@@ -1,0 +1,99 @@
+/* Сброс отступов/паддингов по умолчанию */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Общий стиль */
+  body {
+    font-family: Arial, sans-serif;
+    background: url("./images/background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  /* Шапка (header) по центру */
+  header {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  /* Логотип круглым */
+  #barber-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-top: 10px;
+  }
+  
+  /* Основная часть */
+  main {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Заголовки */
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
+  
+  /* Формы */
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .form-group select,
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #f1f1f1;
+    color: #333;
+  }
+  
+  /* Кнопка */
+  button[type="submit"] {
+    cursor: pointer;
+    background-color: #ffc107;
+    color: #000;
+    font-weight: bold;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    font-size: 1.1rem;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #ffa000;
+  }

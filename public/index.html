@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Запись к барберу</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body style="background-color:#f7f7f7; margin:0; padding:0;">
+    <!-- Контейнер для затемнённой рамки -->  
+  <div style="  
+    margin: 20px auto;  
+    max-width: 800px;  
+    background-color: rgba(0, 0, 0, 0.4);  
+    backdrop-filter: blur(4px);  
+    border-radius: 8px;  
+    padding: 20px;  
+    color: #fff;  
+  ">  
+  <header>
+    <h1>Барбершоп "Очередной" в Москве</h1>
+    <img id="barber-logo" src="./images/logo.png" alt="Логотип барбершопа"/>
+  </header>
+
+  <section style="text-align:center; max-width:600px; margin:0 auto 30px;">  
+    <p>  
+      Добро пожаловать в наш барбершоп! Мы специализируемся на мужских стрижках,  
+      уходе за бородой и стайлинге. Наши профессиональные барберы готовы помочь  
+      вам всегда выглядеть стильно и ухоженно. Мы используем только качественные  
+      инструменты и косметику, чтобы любой образ получился идеальным.  
+    </p>  
+  </section> 
+
+  <main style="max-width:600px; margin:0 auto;">
+    <form id="appointment-form">
+      <h2>Запись на приём</h2>
+
+      <!-- Дата -->
+      <div class="form-group">
+        <label for="date">Дата:</label>
+        <input type="date" id="date" name="date" required />
+      </div>
+
+      <!-- Время -->
+      <div class="form-group">
+        <label for="time">Время:</label>
+        <select id="time" name="time" required>
+          <!-- Варианты будут добавляться скриптом -->
+        </select>
+      </div>
+
+      <!-- Специалист -->
+      <div class="form-group">
+        <label for="specialist">Специалист:</label>
+        <select id="specialist" name="specialist" required>
+          <!-- Варианты будут добавляться скриптом -->
+        </select>
+      </div>
+
+      <!-- Услуга -->
+      <div class="form-group">
+        <label for="service">Услуга:</label>
+        <select id="service" name="service" required>
+          <!-- Варианты будут добавляться скриптом -->
+        </select>
+      </div>
+
+      <!-- Тип стрижки (скрытый по умолчанию) -->
+      <div class="form-group" id="strizhkaTypeWrapper">
+        <label for="strizhka-type">Тип стрижки:</label>
+        <select id="strizhka-type" name="strizhka-type">
+          <!-- Варианты будут добавляться скриптом -->
+        </select>
+      </div>
+
+      <!-- ФИО -->
+      <div class="form-group">
+        <label for="name">ФИО:</label>
+        <input type="text" id="name" name="name" required/>
+      </div>
+
+      <!-- Телефон -->
+      <div class="form-group">
+        <label for="phone">Номер телефона:</label>
+        <input type="tel" id="phone" name="phone" required/>
+      </div>
+
+      <button type="submit">Подтвердить запись</button>
+    </form>
+  </main>
+
+      <!-- Модальное окно -->  
+      <div id="confirmationModal" style="  
+        display: none;   
+        position: fixed;   
+        top: 0; left: 0; right: 0; bottom: 0;   
+        background-color: rgba(0,0,0,0.5);   
+        justify-content: center;   
+        align-items: center;  
+        z-index: 1000;">  
+      <div style="  
+        background-color: #fff;   
+        padding: 20px;   
+        border-radius: 8px;   
+        width: 90%;   
+        max-width: 500px;  
+        margin: 0 auto;  
+        color: #000;  
+      ">  
+      <h2>Подтверждение записи</h2>  
+      <p id="modalInfo"></p>  
+      <button id="closeModalBtn" style="  
+        background-color: #06c;  
+        color: #fff;  
+        border: none;  
+        padding: 8px 16px;  
+        cursor: pointer;  
+        border-radius: 4px;  
+        ">  
+        Закрыть  
+      </button>  
+    </div>  
+  </div>  
+
+  <script src="script.js"></script>
+</body>
+</html>
